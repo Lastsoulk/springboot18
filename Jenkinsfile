@@ -22,7 +22,7 @@ node {
   
     stage('Build Project') {
       // build project via maven
-      sh "'${mvnHome}/bin/mvn' -Dmaven.test.failure.ignore clean package"
+      bat "'${mvnHome}/bin/mvn' -Dmaven.test.failure.ignore clean package"
     }
 	
 	stage('Publish Tests Results'){
@@ -39,9 +39,9 @@ node {
 		
     stage('Build Docker Image') {
       // build docker image
-      sh "whoami"
-      sh "ls -all /var/run/docker.sock"
-      sh "mv ./target/hello*.jar ./data" 
+      bat  "whoami"
+      bat  "ls -all /var/run/docker.sock"
+      bat  "mv ./target/hello*.jar ./data" 
       
       dockerImage = docker.build("api-rest")
     }
@@ -52,8 +52,8 @@ node {
 
       echo "Docker Image Tag Name: ${dockerImageTag}"
 
-      sh "docker login -u lastsoulk -p kain789741 ${dockerRepoUrl}"
-      sh "docker tag ${dockerImageName} ${dockerImageTag}"
-      sh "docker push ${dockerImageTag}"
+      bat  "docker login -u lastsoulk -p kain789741 ${dockerRepoUrl}"
+      bat  "docker tag ${dockerImageName} ${dockerImageTag}"
+      bat  "docker push ${dockerImageTag}"
     }
 }
