@@ -20,10 +20,12 @@ node {
       mvnHome = tool 'Maven 3.5.3'
     }    
   
-    stage('Build Project') {
-      // build project via maven
-      sh "'${mvnHome}/bin/mvn.exe' -Dmaven.test.failure.ignore clean package"
-    }
+    stage('Build') {
+            sh 'mvn clean install'
+
+            def pom = readMavenPom file:'pom.xml'
+            print pom.version
+        }
 	
 	stage('Publish Tests Results'){
       parallel(
@@ -36,7 +38,12 @@ node {
           echo "This is branch b"
       })
     }
-		
+	stage('Image') {
+            dir ('account-service') {
+                def app = docker.build "localhost:5000/account-service:${env.version}"
+                app.push()
+            }
+        }	
     stage('Build Docker Image') {
       // build docker image
       bat  "whoami"
