@@ -59,7 +59,7 @@ node {
 
       echo "Docker Image Tag Name: ${dockerImageTag}"
 
-      bat  "docker login -u lastsoulk -p kain789741 ${dockerRepoUrl}"
+      bat  "docker login -u lastsoulk -p  ${dockerRepoUrl}"
       bat  "docker tag ${dockerImageName} ${dockerImageTag}"
       bat  "docker push ${dockerImageTag}"
     }
